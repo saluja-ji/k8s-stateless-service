@@ -1,127 +1,54 @@
-# Kubernetes Production Blueprint
+# Kubernetes Stateless Service Blueprint
 
-A production-oriented Kubernetes blueprint for deploying, scaling, and operating a stateless web service using native Kubernetes primitives.
-
----
-
-## Overview
-
-This repository demonstrates how a stateless application is deployed and operated in Kubernetes **with production concerns in mind**.  
-The focus is on **operational correctness**, not application complexity.
-
-The blueprint emphasizes:
-- predictable deployments
-- safe scaling
-- health-based traffic management
-- configuration isolation
-- reproducible infrastructure behavior
-
-This repository is intentionally minimal in business logic and explicit in infrastructure design.
+A beginner-friendly but production-oriented example of how to deploy and operate a stateless service on Kubernetes using core Kubernetes primitives.
 
 ---
 
-## Architecture
+## What is this project?
 
-**High-level flow**
+This repository is a **practical Kubernetes blueprint** that shows how a simple stateless application is deployed, scaled, and managed in a way that resembles real production setups.
 
-Client
-↓
-Ingress
-↓
-Service
-↓
-Deployment
-↓
-Pods (stateless application)
-
-
-All resources are deployed into a dedicated namespace to ensure logical isolation.
+The goal is not to build a complex application, but to focus on **how applications should behave and be operated inside Kubernetes**.
 
 ---
 
-## Design Principles
+## What this project demonstrates
 
-### Stateless by default
-The application maintains no local state, enabling safe horizontal scaling and deterministic rollouts.
-
-### Explicit health signaling
-Readiness and liveness probes are defined separately:
-- readiness gates traffic
-- liveness enforces container restarts
-
-This prevents degraded pods from receiving traffic while avoiding unnecessary restarts.
-
-### Resource-aware scheduling
-CPU and memory requests and limits are explicitly defined to:
-- inform scheduler placement
-- support autoscaling decisions
-- prevent resource starvation
-
-### Zero-downtime deployments
-Rolling updates are configured to ensure continuous availability during releases.
-
-### Configuration isolation
-Runtime configuration and secrets are externalized using Kubernetes-native mechanisms.
+- Containerizing a simple stateless application
+- Deploying it using a Kubernetes Deployment
+- Managing configuration with ConfigMaps and Secrets
+- Handling health checks using readiness and liveness probes
+- Scaling the application using a Horizontal Pod Autoscaler (HPA)
+- Exposing the service internally and externally using Service and Ingress
+- Applying safe, zero-downtime rolling updates
 
 ---
 
-## Kubernetes Resources
+## High-level architecture
 
-| Resource | Purpose |
-|--------|--------|
-| Namespace | Logical isolation |
-| Deployment | Declarative lifecycle management |
-| Service | Stable internal networking |
-| Ingress | External traffic routing |
-| ConfigMap | Non-sensitive configuration |
-| Secret | Sensitive configuration placeholders |
-| HPA | Horizontal scaling |
+Client → Ingress → Service → Deployment → Pods
+
+
+All resources are deployed inside a dedicated Kubernetes namespace for isolation.
 
 ---
 
-## Deployment Strategy
+## Why this project exists
 
-- Rolling update strategy:
-  - `maxUnavailable: 0`
-  - `maxSurge: 1`
-- Traffic is routed only to ready pods
-- Failed containers are restarted automatically
-- Rollbacks are achieved by reverting deployment changes
+Many beginner Kubernetes projects stop at *“it runs”*.  
+This project goes one step further and focuses on:
 
-This mirrors common production deployment defaults for stateless workloads.
+- how Kubernetes decides when traffic should reach a pod  
+- how applications scale safely  
+- how failures are handled automatically  
+- how configuration is separated from application code  
 
----
-
-## Scaling Model
-
-The service uses a **Horizontal Pod Autoscaler** based on CPU utilization.
-
-- Minimum replicas ensure baseline availability
-- Maximum replicas cap uncontrolled growth
-- Resource requests provide accurate scaling signals
-
-This approach is suitable for CPU-bound stateless services.
+These are the basics of **real-world DevOps and platform engineering**.
 
 ---
 
-## Failure Handling
+## Repository structure
 
-- Unhealthy pods are removed from service via readiness probes
-- Crashed containers are restarted automatically
-- Misconfigured deployments fail fast rather than degrade silently
-- Kubernetes reconciliation ensures desired state convergence
-
----
-
-## Repository Structure
-
-.
-├── app/ # Minimal stateless application
-├── docker/ # Container build configuration
-├── k8s/ # Kubernetes manifests
-├── scripts/ # Operational scripts
-├── diagrams/ # Architecture diagrams
-└── README.md
 
 
 
