@@ -31,23 +31,28 @@ Client → Ingress → Service → Deployment → Pods
 
 All resources are deployed inside a dedicated Kubernetes namespace for isolation.
 
----
-
-## Why this project exists
-
-Many beginner Kubernetes projects stop at *“it runs”*.  
-This project goes one step further and focuses on:
-
-- how Kubernetes decides when traffic should reach a pod  
-- how applications scale safely  
-- how failures are handled automatically  
-- how configuration is separated from application code  
-
-These are the basics of **real-world DevOps and platform engineering**.
-
----
 
 ## Repository structure
+.
+├── app/ # Minimal stateless application
+├── docker/ # Dockerfile for the application
+├── k8s/ # Kubernetes manifests
+├── scripts/ # Deployment helper scripts
+├── diagrams/ # Architecture diagram
+└── README.md
+
+---
+
+## Notes & limitations
+
+- Autoscaling is CPU-based and reactive
+- No persistent storage (by design)
+- Secrets are handled using Kubernetes Secrets only
+- TLS and advanced routing depend on the ingress controller
+
+These choices are intentional to keep the project simple and focused.
+
+---
 
 
 
